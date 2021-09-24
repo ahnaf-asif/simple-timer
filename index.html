@@ -1,0 +1,140 @@
+<html>
+    <title>timer</title>
+    <head></head>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .stopwatch{
+            font-size: 100px;
+        }
+        .buttons{
+            position: absolute;
+            right: 20;
+            top: 20;
+        }
+        button{
+            /* margin-top: ; */
+            height: 40px;
+            width: 100px;
+            cursor: pointer;
+        }
+        input{
+            height: 40px;
+            font-size: 25px;
+            text-align: center;
+        }
+    </style>
+
+
+    <body>
+        <div class="buttons">
+            <input type="number" id="minutes" value="10">
+            <input type="number" id="seconds" value="00">
+            <button id='set'>Set time</button>
+            <button id='start'>Start</button>
+            <button id='stop' disabled>Stop</button> 
+            <button id='reset'>Reset</button>
+        </div>
+        <div class="stopwatch">
+            
+        </div>
+    </body>
+
+    <script>
+        let initialTime = 10*60;
+        let time = initialTime;
+        let isPaused = false;
+
+        let minutes = Math.floor(time/60);
+        let seconds = time%60;
+        let timer;
+
+        if(minutes <= 9)s1 = `0${minutes}`;
+        else s1 = minutes;
+
+        if(seconds <= 9)s2 = `0${seconds}`;
+        else s2 = seconds;
+
+        s = `${s1} : ${s2}`;
+        document.querySelector('.stopwatch').innerHTML = s;
+
+        document.getElementById('set').addEventListener('click', ()=>{
+            initialTime =  parseInt(document.getElementById('minutes').value)*60+parseInt(document.getElementById('seconds').value);
+            time = initialTime;
+
+            console.log(time);
+
+            document.getElementById('start').disabled=false;
+            document.getElementById('stop').disabled=false;
+            clearInterval(timer);
+            time = initialTime;
+            minutes = Math.floor(time/60);
+            seconds = time%60;
+
+            if(minutes <= 9)s1 = `0${minutes}`;
+            else s1 = minutes;
+
+            if(seconds <= 9)s2 = `0${seconds}`;
+            else s2 = seconds;
+
+            s = `${s1} : ${s2}`;
+            document.querySelector('.stopwatch').innerHTML = s;
+        });
+
+        document.getElementById('start').addEventListener('click', ()=>{
+            document.getElementById('start').disabled=true;
+            document.getElementById('stop').disabled = false;
+            isPaused = false;
+            clearInterval(timer);
+            timer = setInterval(() => {
+                minutes = Math.floor(time/60);
+                seconds = time%60;
+
+                if(minutes <= 9)s1 = `0${minutes}`;
+                else s1 = minutes;
+
+                if(seconds <= 9)s2 = `0${seconds}`;
+                else s2 = seconds;
+
+                s = `${s1} : ${s2}`;
+                document.querySelector('.stopwatch').innerHTML = s;
+                time--;
+            }, 1000);
+        });
+        document.getElementById('stop').addEventListener('click', ()=>{
+            document.getElementById('start').disabled=false;
+            clearInterval(timer);
+            document.getElementById('stop').disabled = true;
+        });
+        document.getElementById('reset').addEventListener('click',()=>{
+            document.getElementById('start').disabled=false;
+            document.getElementById('stop').disabled=false;
+            clearInterval(timer);
+
+            initialTime =  parseInt(document.getElementById('minutes').value)*60+parseInt(document.getElementById('seconds').value);
+            time = initialTime;
+
+            time = initialTime;
+            minutes = Math.floor(time/60);
+            seconds = time%60;
+
+            if(minutes <= 9)s1 = `0${minutes}`;
+            else s1 = minutes;
+
+            if(seconds <= 9)s2 = `0${seconds}`;
+            else s2 = seconds;
+
+            s = `${s1} : ${s2}`;
+            document.querySelector('.stopwatch').innerHTML = s;
+        });
+    </script>
+</html>
